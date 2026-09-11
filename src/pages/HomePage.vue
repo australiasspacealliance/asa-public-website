@@ -17,6 +17,7 @@
 			</div>
 		</q-parallax>
 	</div>
+	<DiscordServerCard />
 	<div id="about" class="body--light text-dark column flex-center" style="min-height: 400px; background-color: #ededed">
 		<div class="centered full-width">
 			<div class="row q-pa-lg q-ml-xl justify-between items-center">
@@ -149,6 +150,7 @@
 
 <script setup lang="ts">
 import DiagonalSlice from "@/components/DiagonalSlice.vue";
+import DiscordServerCard from "@/components/DiscordServerCard.vue";
 
 defineOptions({
 	name: "HomePage",
