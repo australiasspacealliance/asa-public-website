@@ -56,7 +56,11 @@ interface ILinkOption {
 	subMenu?: ILinkOption[];
 }
 
-const menuItems = ref<ILinkOption[]>([]);
+const menuItems = ref<ILinkOption[]>([
+			{ label: "Home", route: "/" },
+			{ label: "Roster", route: "/roster" },
+			{ label: "Discord", icon: "fab fa-discord", externalLink: "https://discord.gg/australis" },
+		]);
 </script>
 
 <style lang="scss">
