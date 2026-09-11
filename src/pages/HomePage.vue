@@ -174,6 +174,10 @@ const divisions: IDivision[] = [
 		image: "/icons/divisions/ico_salvage.png",
 	},
 	{
+		name: "Crafting",
+		image: "/icons/divisions/ico_crafting.png",
+	},
+	{
 		name: "Logistics",
 		image: "/icons/divisions/ico_logistics.png",
 	},
