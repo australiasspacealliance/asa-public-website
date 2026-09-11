@@ -4,7 +4,10 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
 		component: async () => import("layouts/HomeLayout.vue"),
-		children: [{ path: "", component: async () => import("pages/HomePage.vue") }],
+		children: [
+			{ path: "", component: async () => import("pages/HomePage.vue") },
+			{ path: "roster", component: async () => import("pages/RosterPage.vue") },
+		],
 	},
 	{
 		path: "/:catchAll(.*)*",
