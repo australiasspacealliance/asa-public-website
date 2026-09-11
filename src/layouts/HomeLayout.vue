@@ -59,6 +59,7 @@ interface ILinkOption {
 const menuItems = ref<ILinkOption[]>([
 			{ label: "Home", route: "/" },
 			{ label: "Roster", route: "/roster" },
+			{ label: "Events", route: "/events" },
 			{ label: "Discord", icon: "fab fa-discord", externalLink: "https://discord.gg/australis" },
 		]);
 </script>
