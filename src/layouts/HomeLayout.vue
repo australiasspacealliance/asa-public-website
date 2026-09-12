@@ -38,11 +38,14 @@
 		<q-page-container>
 			<router-view />
 		</q-page-container>
+
+		<ThemeMusicPlayer />
 	</q-layout>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import ThemeMusicPlayer from "@/components/ThemeMusicPlayer.vue";
 
 defineOptions({
 	name: "HomeLayout",
