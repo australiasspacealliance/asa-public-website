@@ -23,7 +23,7 @@
 			</q-tooltip>
 		</q-btn>
 
-		<audio ref="audioEl" src="/audio/asa-theme.mp3" loop preload="none" @play="isPlaying = true" @pause="isPlaying = false" />
+		<audio ref="audioEl" src="/audio/Australis%20Space%20Alliance.mp3" loop preload="none" @play="isPlaying = true" @pause="isPlaying = false" />
 	</div>
 </template>
 
@@ -181,4 +181,3 @@ watch(isPlaying, savePrefs);
 	}
 }
 </style>
-
