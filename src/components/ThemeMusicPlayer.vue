@@ -1,17 +1,27 @@
 <template>
 	<div class="theme-music" :class="{ open: panelOpen }">
-		<q-card v-if="panelOpen" flat class="theme-music-panel">
-			<div class="text-caption text-grey-5">Now playing</div>
-			<div class="text-white text-weight-medium q-mb-sm">ASA Theme</div>
+		<transition name="theme-music-panel-fade">
+			<q-card v-if="panelOpen" flat class="theme-music-panel">
+				<div class="text-caption text-grey-5">Now playing</div>
+				<div class="text-white text-weight-medium q-mb-sm">ASA Theme</div>
 
-			<div class="row items-center q-gutter-sm">
-				<q-icon name="volume_down" color="grey-5" size="18px" />
-				<q-slider v-model="volume" :min="0" :max="100" color="white" track-color="grey-8" class="col" @update:model-value="onVolumeChange" />
-				<q-icon name="volume_up" color="grey-5" size="18px" />
-			</div>
-		</q-card>
+				<div class="row items-center q-gutter-sm">
+					<q-icon name="volume_down" color="grey-5" size="18px" />
+					<q-slider v-model="volume" :min="0" :max="100" color="white" track-color="grey-8" class="col" @update:model-value="onVolumeChange" />
+					<q-icon name="volume_up" color="grey-5" size="18px" />
+				</div>
+			</q-card>
+		</transition>
 
-		<q-btn round unelevated class="theme-music-fab" :class="{ playing: isPlaying }" @click="togglePlay" @mouseenter="panelOpen = true" @mouseleave="panelOpen = false">
+		<q-btn
+			round
+			unelevated
+			class="theme-music-fab"
+			:class="{ playing: isPlaying, attention: showAttentionPulse }"
+			@click="togglePlay"
+			@mouseenter="panelOpen = true"
+			@mouseleave="panelOpen = false"
+		>
 			<span class="equalizer" v-if="isPlaying">
 				<span />
 				<span />
@@ -28,40 +38,50 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 
 defineOptions({
 	name: "ThemeMusicPlayer",
 });
 
 // Browsers block autoplay-with-sound, and it's obnoxious for visitors anyway -
-// playback only ever starts from an explicit click. We just remember the
-// volume (and whether the visitor had it playing) across page navigations
-// and repeat visits.
+// playback only ever starts from an explicit click. We remember the volume,
+// whether the visitor had it playing, and whether they've ever touched the
+// control at all, across page navigations and repeat visits.
 const STORAGE_KEY = "asa-theme-music";
 
 const audioEl = ref<HTMLAudioElement | null>(null);
 const isPlaying = ref(false);
 const panelOpen = ref(false);
 const volume = ref(50);
+const everInteracted = ref(false);
 
-function readPrefs(): { volume: number; wasPlaying: boolean } {
+// A gentle pulse invites a first-time visitor to notice the control exists.
+// It stops for good the moment someone actually presses it, so it never
+// keeps nagging a returning visitor who already knows it's there.
+const showAttentionPulse = computed(() => !everInteracted.value && !isPlaying.value);
+
+function readPrefs(): { volume: number; wasPlaying: boolean; discovered: boolean } {
 	try {
 		const raw = localStorage.getItem(STORAGE_KEY);
-		if (!raw) return { volume: 50, wasPlaying: false };
+		if (!raw) return { volume: 50, wasPlaying: false, discovered: false };
 		const parsed = JSON.parse(raw);
 		return {
 			volume: typeof parsed.volume === "number" ? parsed.volume : 50,
 			wasPlaying: !!parsed.wasPlaying,
+			discovered: !!parsed.discovered,
 		};
 	} catch {
-		return { volume: 50, wasPlaying: false };
+		return { volume: 50, wasPlaying: false, discovered: false };
 	}
 }
 
 function savePrefs() {
 	try {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify({ volume: volume.value, wasPlaying: isPlaying.value }));
+		localStorage.setItem(
+			STORAGE_KEY,
+			JSON.stringify({ volume: volume.value, wasPlaying: isPlaying.value, discovered: everInteracted.value }),
+		);
 	} catch {
 		// Storage can be unavailable (private browsing, quota) - not worth breaking playback over.
 	}
@@ -76,6 +96,8 @@ async function togglePlay() {
 	const el = audioEl.value;
 	if (!el) return;
 
+	everInteracted.value = true;
+
 	if (isPlaying.value) {
 		el.pause();
 	} else {
@@ -85,11 +107,13 @@ async function togglePlay() {
 			// Rare: some browsers still refuse a play() call. Nothing to recover here.
 		}
 	}
+	savePrefs();
 }
 
 onMounted(() => {
 	const prefs = readPrefs();
 	volume.value = prefs.volume;
+	everInteracted.value = prefs.discovered;
 	if (audioEl.value) audioEl.value.volume = prefs.volume / 100;
 
 	// A visitor who had it playing on a previous page keeps hearing it after
@@ -125,18 +149,64 @@ watch(isPlaying, savePrefs);
 	padding: 14px 16px;
 	margin-bottom: 12px;
 	width: 220px;
+	max-width: calc(100vw - 64px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.theme-music-panel-fade-enter-active,
+.theme-music-panel-fade-leave-active {
+	transition: opacity 0.16s ease, transform 0.16s ease;
+}
+.theme-music-panel-fade-enter-from,
+.theme-music-panel-fade-leave-to {
+	opacity: 0;
+	transform: translateY(6px);
 }
 
 .theme-music-fab {
-	width: 52px;
-	height: 52px;
-	background-color: #1a1a1e;
+	position: relative;
+	width: 56px;
+	height: 56px;
+	background: linear-gradient(145deg, #26262e, #17171b);
 	color: white;
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+	border: 1px solid rgba(114, 137, 218, 0.35);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+	transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+	&:hover {
+		transform: scale(1.06);
+		border-color: rgba(114, 137, 218, 0.6);
+	}
+
+	&:active {
+		transform: scale(0.96);
+	}
 
 	&.playing {
 		background-color: $discord;
+		border-color: rgba(255, 255, 255, 0.25);
+	}
+
+	&.attention::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		box-shadow: 0 0 0 0 rgba(114, 137, 218, 0.55);
+		animation: attention-pulse 2.4s ease-out infinite;
+		pointer-events: none;
+	}
+}
+
+@keyframes attention-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(114, 137, 218, 0.55);
+	}
+	70% {
+		box-shadow: 0 0 0 14px rgba(114, 137, 218, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(114, 137, 218, 0);
 	}
 }
 
@@ -178,6 +248,22 @@ watch(isPlaying, savePrefs);
 	.equalizer span {
 		animation: none;
 		height: 10px;
+	}
+	.theme-music-fab.attention::before {
+		animation: none;
+		box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.35);
+	}
+}
+
+@media (max-width: 600px) {
+	.theme-music {
+		right: 16px;
+		bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+	}
+
+	.theme-music-fab {
+		width: 48px;
+		height: 48px;
 	}
 }
 </style>
