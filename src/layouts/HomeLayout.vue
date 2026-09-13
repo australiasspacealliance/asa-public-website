@@ -63,6 +63,7 @@ const menuItems = ref<ILinkOption[]>([
 			{ label: "Home", route: "/" },
 			{ label: "Roster", route: "/roster" },
 			{ label: "Events", route: "/events" },
+			{ label: "Shop", icon: "storefront", externalLink: "https://baddogz.cloud/shop.html" },
 			{ label: "Discord", icon: "fab fa-discord", externalLink: "https://discord.gg/australis" },
 		]);
 </script>

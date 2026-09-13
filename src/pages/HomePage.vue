@@ -19,6 +19,7 @@
 	</div>
 	<DiscordServerCard />
 	<TwitchStreamCard />
+	<ShopCard />
 	<div id="about" class="body--light text-dark column flex-center" style="min-height: 400px; background-color: #ededed">
 		<div class="centered full-width">
 			<div class="row q-pa-lg q-ml-xl justify-between items-center">
@@ -100,9 +101,6 @@
 						Pathways including mining, bunker operations, cargo logistics, salvage operations, medical response, trade strategies, space combat tactics, and ground
 						combat proficiency.
 					</div>
-					<!-- <div v-for="division in divisions" class="col-4">
-						<img :src="division.image" :alt="division.name" style="max-width: 200px; z-index: 999" class="full-width"> </img>
-					</div> -->
 					<div class="row justify-center items-center q-gutter-xl q-mt-lg">
 						<div v-for="division in divisions" :key="division.name" class="text-center">
 							<img :src="division.image" height="200" />
@@ -153,6 +151,7 @@
 import DiagonalSlice from "@/components/DiagonalSlice.vue";
 import DiscordServerCard from "@/components/DiscordServerCard.vue";
 import TwitchStreamCard from "@/components/TwitchStreamCard.vue";
+import ShopCard from "@/components/ShopCard.vue";
 
 defineOptions({
 	name: "HomePage",
