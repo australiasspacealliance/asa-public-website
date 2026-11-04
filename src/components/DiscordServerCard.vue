@@ -18,7 +18,6 @@
 							<span class="status-dot" :class="{ pending: onlineCount === null }" />
 							<span class="text-white">{{ onlineCount ?? "—" }} Online</span>
 						</div>
-						<div class="stat-line text-white">{{ memberCount ?? "—" }} Members</div>
 					</div>
 
 					<div v-if="visibleTags.length" class="row q-gutter-xs q-mt-sm">
@@ -56,23 +55,14 @@ const INVITE_CODE = "australis";
 const INVITE_API_URL = `https://discord.com/api/v10/invites/${INVITE_CODE}?with_counts=true&with_expiration=true`;
 
 const guildName = ref("Australis Space Alliance");
-const memberCount = ref<number | null>(null);
 const onlineCount = ref<number | null>(null);
-const establishedLabel = ref("Jan 2019");
+// ASA was founded Oct 2017 (RSI org page). The Discord server is newer, so don't use its creation date.
+const establishedLabel = ref("Oct 2017");
 const iconUrl = ref<string | null>(null);
 const tags = ref<string[]>([]);
 
 const visibleTags = computed(() => tags.value.slice(0, 3));
 const extraTagCount = computed(() => Math.max(0, tags.value.length - 3));
-
-// Discord IDs are snowflakes: the top bits encode the creation timestamp.
-// Needs BigInt - the ID is a 64-bit value and a plain JS Number can't shift
-// it accurately.
-function snowflakeToDate(id: string): Date {
-	const DISCORD_EPOCH = 1420070400000n;
-	const ms = (BigInt(id) >> 22n) + DISCORD_EPOCH;
-	return new Date(Number(ms));
-}
 
 onMounted(async () => {
 	try {
@@ -81,10 +71,8 @@ onMounted(async () => {
 		const data = await res.json();
 
 		if (data.guild?.name) guildName.value = data.guild.name;
-		if (typeof data.approximate_member_count === "number") memberCount.value = data.approximate_member_count;
 		if (typeof data.approximate_presence_count === "number") onlineCount.value = data.approximate_presence_count;
 		if (data.guild?.id) {
-			establishedLabel.value = snowflakeToDate(data.guild.id).toLocaleDateString("en-US", { month: "short", year: "numeric" });
 			if (data.guild.icon) {
 				iconUrl.value = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=128`;
 			}

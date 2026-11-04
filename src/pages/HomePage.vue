@@ -26,11 +26,12 @@
 				<div class="col-12 col-md-7">
 					<div class="text-h3 text-bold">About</div>
 					<div class="text-h5 q-pt-lg">
-						<span class="text-bold">Australis Space Alliance</span> is an industrial-focused Star Citizen organisation based in Australia, with members from around the
-						globe.
+						<span class="text-bold">Australis Space Alliance</span> is an industrial Star Citizen organisation with Southern Hemisphere roots and crew in every time
+						zone.
 						<br />
 						<br />
-						Our main focuses are mining, trading and construction with auxiliary functions of security, medical and exploratory gameplay.
+						Industry with teeth: mining, salvage, hauling and construction, backed by our own security force, with medical, exploration, crafting and engineering
+						alongside. What we mine, we craft, and what we craft, we sell.
 					</div>
 				</div>
 				<div class="col-12 col-md-4 q-pa-lg">
@@ -48,8 +49,8 @@
 			<template #content>
 				<div class="row items-center full-height">
 					<div class="text-h5 q-pa-xl" style="max-width: 80%">
-						With a legacy spanning more than half a decade, ASA boasts a rich history of exploration, camaraderie, and collective achievement in the vast universe of
-						Star Citizen.
+						Flying since 2017. Nine years on, the game has had its ups and downs and so have we, but we've kept a solid core, kept training people and kept
+						flying.
 					</div>
 				</div>
 			</template>
@@ -61,7 +62,7 @@
 			<q-img src="/images/lupin2.png" class="full-width" style="height: 100vh">
 				<div id="eventContent" class="absolute-full column items-center justify-center q-pa-md q-pa-lg-xl">
 					<div class="text-h3 text-center">Weekly events for all interests</div>
-					<div class="text-h5 q-pa-md text-center">We host a whopping 14 events each week, catering to every aspect of Star Citizen gameplay.</div>
+					<div class="text-h5 q-pa-md text-center">Two ops every day, 14 a week, morning and evening AEST, covering every side of Star Citizen.</div>
 					<div class="text-h5 q-pa-md text-center">
 						Whether you're a thrill-seeker, a resource gatherer, a combat enthusiast, or a savvy trader, we have an event tailored just for you.
 					</div>
@@ -98,8 +99,8 @@
 						that await us in the 'verse.
 					</div>
 					<div class="text-h5 q-pa-md q-mx-xl">
-						Pathways including mining, bunker operations, cargo logistics, salvage operations, medical response, trade strategies, space combat tactics, and ground
-						combat proficiency.
+						Twelve careers across Security, Industry and Science, from mining and salvage to combat flight, field medic and engineering. Each one has its own in-house
+						manual and checklist, so you learn it properly instead of guessing.
 					</div>
 					<div class="row justify-center items-center q-gutter-xl q-mt-lg">
 						<div v-for="division in divisions" :key="division.name" class="text-center">
@@ -120,8 +121,9 @@
 						<span class="text-bold">Australis Space Alliance</span> is open to all.
 						<br />
 						<br />
-						We are a friendly, welcoming, and active community. Join our <a href="https://discord.gg/australis" class="link" target="_blank">Discord</a> to learn more
-						about us and our events, speak to one of our leaders, and to fill out an application.
+						Every time zone is welcome. Join our <a href="https://discord.gg/australis" class="link" target="_blank">Discord</a>, hit
+						<span class="text-bold">Join ASA</span> and fill in the short form. You start a 2-week trial as a Recruit with a buddy to show you around: turn up to a
+						couple of ops a week and talk to people. That's it.
 						<br />
 						<br />
 						<span class="text-bold">ASA</span> expects a level of activity and respects open communication.
